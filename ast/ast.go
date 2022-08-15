@@ -222,10 +222,10 @@ func (fl *FunctionLiteral) String() string {
 	return out.String()
 }
 
-type CallExpression struct{
-    Token token.Token
-    Function Expression
-    Arguments []Expression
+type CallExpression struct {
+	Token     token.Token
+	Function  Expression
+	Arguments []Expression
 }
 
 func (ce *CallExpression) expressionNode()      {}
