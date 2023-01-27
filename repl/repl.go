@@ -29,22 +29,22 @@ func Start(in io.Reader, out io.Writer) {
 			printParserErrors(out, p.Errors())
 			continue
 		}
-        comp := compiler.New()
-        err := comp.Compile(program)
-        if err != nil{
-            fmt.Fprintf(out, "Compilation failed: \n %s\n", err)
-            continue
-        }
-        machine := vm.New(comp.Bytecode())
-        err = machine.Run()
-        if err != nil{
-            fmt.Fprintf(out, "Executing bytecode failed: \n %s\n", err)
-            continue
-        }
+		comp := compiler.New()
+		err := comp.Compile(program)
+		if err != nil {
+			fmt.Fprintf(out, "Compilation failed: \n %s\n", err)
+			continue
+		}
+		machine := vm.New(comp.Bytecode())
+		err = machine.Run()
+		if err != nil {
+			fmt.Fprintf(out, "Executing bytecode failed: \n %s\n", err)
+			continue
+		}
 
-        stackTop := machine.StackTop()
-        io.WriteString(out, stackTop.Inspect())
-        io.WriteString(out, "\n")
+		LastPopped := machine.LastPoppedStackElem()
+		io.WriteString(out, LastPopped.Inspect())
+		io.WriteString(out, "\n")
 
 	}
 }
