@@ -5,21 +5,23 @@ import (
 	"fmt"
 	"hash/fnv"
 	"monkey/ast"
+	"monkey/code"
 	"strings"
 )
 
 type ObjectType string
 
 const (
-	INTEGER_OBJ      = "INTEGER"
-	BOOLEAN_OBJ      = "BOOLEAN"
-	NULL_OBJ         = "NULL"
-	RETURN_VALUE_OBJ = "RETURN_VALUE"
-	ERROR_OBJ        = "ERROR"
-	FUNCTION_OBJ     = "FUNCTION"
-	ARRAY_OBJ        = "ARRAY_OBJ"
-	STRING_OBJ       = "STRING_OBJ"
-	HASH_OBJ         = "HASH_OBJ"
+	INTEGER_OBJ           = "INTEGER"
+	BOOLEAN_OBJ           = "BOOLEAN"
+	NULL_OBJ              = "NULL"
+	RETURN_VALUE_OBJ      = "RETURN_VALUE"
+	ERROR_OBJ             = "ERROR"
+	FUNCTION_OBJ          = "FUNCTION"
+	ARRAY_OBJ             = "ARRAY_OBJ"
+	STRING_OBJ            = "STRING_OBJ"
+	HASH_OBJ              = "HASH_OBJ"
+	COMPILED_FUNCTION_OBJ = "COMPILED_FUNCTION_OBJ"
 )
 
 type Function struct {
@@ -119,8 +121,8 @@ type Hash struct {
 	Pairs map[HashKey]HashPair
 }
 
-type Hashable interface{
-    HashKey() HashKey
+type Hashable interface {
+	HashKey() HashKey
 }
 
 func (h *Hash) Type() ObjectType { return HASH_OBJ }
@@ -171,3 +173,12 @@ func (s *String) HashKey() HashKey {
 		Value: h.Sum64(),
 	}
 }
+
+type CompiledFunction struct{
+    Instructions code.Instructions
+}
+
+func (cf *CompiledFunction) Type() ObjectType { return COMPILED_FUNCTION_OBJ }
+func (cf *CompiledFunction) Inspect() string  { return fmt.Sprintf("CompiledFunction[%p]", cf)}
+
+
