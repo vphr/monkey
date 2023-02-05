@@ -11,6 +11,8 @@ import (
 
 type ObjectType string
 
+type BuiltinFunction func(args ...Object) Object
+
 const (
 	INTEGER_OBJ           = "INTEGER"
 	BOOLEAN_OBJ           = "BOOLEAN"
@@ -22,6 +24,8 @@ const (
 	STRING_OBJ            = "STRING_OBJ"
 	HASH_OBJ              = "HASH_OBJ"
 	COMPILED_FUNCTION_OBJ = "COMPILED_FUNCTION_OBJ"
+
+	BUILTIN_OBJ = "BUILTIN"
 )
 
 type Function struct {
@@ -182,3 +186,10 @@ type CompiledFunction struct {
 
 func (cf *CompiledFunction) Type() ObjectType { return COMPILED_FUNCTION_OBJ }
 func (cf *CompiledFunction) Inspect() string  { return fmt.Sprintf("CompiledFunction[%p]", cf) }
+
+type Builtin struct {
+	Fn BuiltinFunction
+}
+
+func (b *Builtin) Type() ObjectType { return BUILTIN_OBJ }
+func (b *Builtin) Inspect() string  { return "builtin function" }
